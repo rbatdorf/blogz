@@ -10,7 +10,7 @@
 
         {% for blog in blog_entries %}
             
-        <p><strong>{{blog.title}}</strong></p>
+        <a href="/blog?id=+{{blog.id}}"><strong>{{blog.title}}</strong></a>
         <p>{{blog.body}}</p>
         <hr />
 
