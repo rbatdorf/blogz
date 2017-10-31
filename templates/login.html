@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Log in to Blogz</h1>
-<a href="/signup">Create Account</a>
+
 <form action="/login" method="post">
     <table>
         <tr>
@@ -20,4 +20,7 @@
     </table>
     <input type="submit" value="Login">
 </form>
+<p>
+    Don't have an account? <a href="/signup">Create one!</a>
+</p>
 {% endblock %}

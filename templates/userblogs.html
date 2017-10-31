@@ -2,13 +2,13 @@
 
 {% block content %}
     
-    <h1>Blogz</h1>
+    <h1>Blogz by {{user.username}}</h1>
 
-    {% if blog_entries|length == 0 %}
+    {% if blogs|length == 0 %}
     <p>No blog entries yet</p>
     {% else %}
 
-        {% for blog in blog_entries %}
+        {% for blog in blogs %}
             
         <a href="/blog?id={{blog.id}}"><strong>{{blog.title}}</strong></a>
         <p>{{blog.body}}</p>

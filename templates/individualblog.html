@@ -5,5 +5,7 @@
     <h1>{{blog.title}}</h1>
 
     <p>{{blog.body}}</p>
+
+    <p>Author: <a href="/blog?user={{blog.author.id}}">{{blog.author.username}}</a></p>
     
 {% endblock %}

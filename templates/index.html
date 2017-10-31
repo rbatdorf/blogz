@@ -2,17 +2,19 @@
 
 {% block content %}
     
-    <h1>Blogz</h1>
+    <h1>Blogz Authors</h1>
 
-    {% if blog_entries|length == 0 %}
-    <p>No blog entries yet</p>
+    {% if user_list|length == 0 %}
+    <p>No users yet</p>
     {% else %}
 
-        {% for blog in blog_entries %}
-            
-        <a href="/blog?id={{blog.id}}"><strong>{{blog.title}}</strong></a>
-        <p>{{blog.body}}</p>
-        <hr />
+        {% for user in user_list %}
+        
+        <ul>
+            <li>
+                <a href="/blog?user={{user.id}}"><strong>{{user.username}}</strong></a>
+            </li>
+        </ul>
 
         {% endfor %}
 

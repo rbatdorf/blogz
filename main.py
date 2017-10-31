@@ -64,23 +64,33 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-
-        # TO DO - validate user's data
         existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
+
+        #Missing values
+        if len(username) == 0 or len(password) == 0 or len(verify) == 0:
+            flash("All fields are required.")
+            return redirect('/signup')
+        
+        elif len(username) < 3 or len(password) < 3:
+            flash("Username and Password both must be at least 3 characters.")
+            return redirect('/signup')
+
+        elif existing_user:
+            flash("That username already exists. Please choose another.")
+            return redirect ('/signup')
+
+        elif password != verify:
+            flash("Passwords do not match.")
+            return redirect('/signup')
+
+        else:
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
             flash("Logged in")
 
-            # TO DO - Remember user is logged in
-
-            return redirect ('/')
-        
-        else:
-            # TO Do - better response
-            return "<h1>Duplicate user</h1>"
+            return redirect ('/newentry')
 
     return render_template('signup.html')
 
@@ -119,7 +129,7 @@ def validation():
         
             blog_title = request.form['title']
             blog = request.form['body']
-            new_blog_entry = Blog(blog_title, blog)
+            new_blog_entry = Blog(blog_title, blog, author)
             db.session.add(new_blog_entry)
             db.session.commit()
 
@@ -137,7 +147,15 @@ def blog_list():
     if request.args.get('id'):
         blog_id = request.args.get('id')
         blog = Blog.query.get(blog_id)
+
         return render_template('individualblog.html', blog=blog)
+
+    elif request.args.get('user'):
+        user_id = request.args.get('user')
+        user = User.query.get(user_id)
+        blogs = Blog.query.filter_by(author_id=user_id).all()
+
+        return render_template('userblogs.html', user=user, blogs=blogs)
     
     else:
 
@@ -147,8 +165,8 @@ def blog_list():
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
-    blog_entries = Blog.query.filter_by(author=author).all()
-    return render_template('index.html',title="Blogz", blog_entries=blog_entries)
+    user_list = User.query.all()
+    return render_template('index.html',title="Blogz", user_list=user_list)
 #@app.route("/signup")
 #def register():
 #    username = request.args.get('username')
